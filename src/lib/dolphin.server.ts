@@ -11,9 +11,11 @@ export type GeneratedQuery = {
   notes: string;
 };
 
+export type Cell = string | number | boolean | null;
+
 export type QueryResult = {
   columns: string[];
-  rows: Record<string, unknown>[];
+  rows: Record<string, Cell>[];
   rowCount: number;
   durationMs: number;
 };
@@ -149,12 +151,24 @@ export async function runReadOnlySql(sql: string): Promise<QueryResult> {
   const durationMs = Date.now() - started;
   if (error) throw new Error(error.message);
 
-  const rows = (Array.isArray(data) ? data : []) as Record<string, unknown>[];
+  const raw = (Array.isArray(data) ? data : []) as Record<string, unknown>[];
+  const rows = raw.map((row) => {
+    const out: Record<string, Cell> = {};
+    for (const [key, value] of Object.entries(row)) {
+      out[key] =
+        value === null || value === undefined
+          ? null
+          : typeof value === "object"
+            ? JSON.stringify(value)
+            : (value as Cell);
+    }
+    return out;
+  });
   const columns = rows.length > 0 ? Object.keys(rows[0]!) : [];
   return { columns, rows, rowCount: rows.length, durationMs };
 }
 
-export function normalizeRows(rows: Record<string, unknown>[]): string {
+export function normalizeRows(rows: Record<string, Cell>[]): string {
   return JSON.stringify(
     rows.map((row) =>
       Object.keys(row)

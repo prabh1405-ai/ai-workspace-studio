@@ -51,7 +51,7 @@ export const runQuery = createServerFn({ method: "POST" })
         ok: false as const,
         error: message,
         columns: [] as string[],
-        rows: [] as Record<string, unknown>[],
+        rows: [] as Record<string, string | number | boolean | null>[],
         rowCount: 0,
         durationMs: 0,
       };
@@ -139,7 +139,7 @@ export const checkAnswer = createServerFn({ method: "POST" })
         isCorrect: false,
         error: message,
         columns: [] as string[],
-        rows: [] as Record<string, unknown>[],
+        rows: [] as Record<string, string | number | boolean | null>[],
         rowCount: 0,
         durationMs: 0,
       };
