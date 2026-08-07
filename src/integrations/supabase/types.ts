@@ -14,13 +14,122 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      practice_attempts: {
+        Row: {
+          created_at: string
+          duration_ms: number
+          id: string
+          is_correct: boolean
+          problem_id: string
+          row_count: number
+          submitted_sql: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number
+          id?: string
+          is_correct?: boolean
+          problem_id: string
+          row_count?: number
+          submitted_sql: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number
+          id?: string
+          is_correct?: boolean
+          problem_id?: string
+          row_count?: number
+          submitted_sql?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "practice_attempts_problem_id_fkey"
+            columns: ["problem_id"]
+            isOneToOne: false
+            referencedRelation: "practice_problems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      practice_problems: {
+        Row: {
+          created_at: string
+          difficulty: string
+          hint: string
+          id: string
+          number: number
+          pro_tip: string
+          question: string
+          solution_sql: string
+          tables: string[]
+          topic: string
+        }
+        Insert: {
+          created_at?: string
+          difficulty: string
+          hint: string
+          id?: string
+          number: number
+          pro_tip: string
+          question: string
+          solution_sql: string
+          tables?: string[]
+          topic: string
+        }
+        Update: {
+          created_at?: string
+          difficulty?: string
+          hint?: string
+          id?: string
+          number?: number
+          pro_tip?: string
+          question?: string
+          solution_sql?: string
+          tables?: string[]
+          topic?: string
+        }
+        Relationships: []
+      }
+      query_history: {
+        Row: {
+          created_at: string
+          duration_ms: number
+          error: string | null
+          id: string
+          prompt: string
+          row_count: number
+          sql: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number
+          error?: string | null
+          id?: string
+          prompt: string
+          row_count?: number
+          sql: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number
+          error?: string | null
+          id?: string
+          prompt?: string
+          row_count?: number
+          sql?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      exec_demo_readonly: { Args: { query_text: string }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
