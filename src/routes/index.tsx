@@ -1,24 +1,40 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { TopNav } from "@/components/dolphin/TopNav";
+import { Sidebar } from "@/components/dolphin/Sidebar";
+import { QueryPromptPanel } from "@/components/dolphin/QueryPromptPanel";
+import { GeneratedSqlPanel } from "@/components/dolphin/GeneratedSqlPanel";
+import { ResultsPanel } from "@/components/dolphin/ResultsPanel";
+import { AiExplanationPanel } from "@/components/dolphin/AiExplanationPanel";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = "Dolphin AI Studio — SQL Workspace Hub";
+const description =
+  "Ask questions in plain English and get instant SQL, live results and a step-by-step AI explanation across all your databases.";
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+    ],
+  }),
+  component: Workspace,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Workspace() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
+      <TopNav />
+      <div className="flex flex-1 gap-4 overflow-hidden p-4">
+        <Sidebar />
+        <main className="scroll-slim flex min-w-0 flex-1 flex-col gap-4 overflow-y-auto pr-1">
+          <QueryPromptPanel />
+          <GeneratedSqlPanel />
+          <ResultsPanel />
+        </main>
+        <AiExplanationPanel />
+      </div>
     </div>
   );
 }
