@@ -5,8 +5,8 @@ import logo from "@/assets/dolphin-logo.png";
 const NAV = [
   { label: "Workspace", icon: LayoutGrid, to: "/" },
   { label: "Database Designer", icon: Table2, to: "/database-designer" },
-  { label: "Practice Mode", icon: Wand2, to: "/" },
-  { label: "History", icon: History, to: "/" },
+  { label: "Practice Mode", icon: Wand2, to: "/practice" },
+  { label: "History", icon: History, to: "/history" },
 ] as const;
 
 export function TopNav() {
@@ -38,7 +38,6 @@ export function TopNav() {
           </Link>
         ))}
       </nav>
-
 
       <div className="flex items-center gap-2">
         <button
