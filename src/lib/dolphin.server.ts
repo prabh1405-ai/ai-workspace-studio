@@ -177,3 +177,106 @@ export function normalizeRows(rows: Record<string, Cell>[]): string {
     ),
   );
 }
+
+/* ---------------------------- Schema designer ---------------------------- */
+
+export type DesignColumnDTO = { name: string; type: string; key: "PK" | "FK" | null };
+export type DesignTableDTO = { name: string; columns: DesignColumnDTO[] };
+export type DesignRelationDTO = { from: string; to: string; label: string };
+
+export type SchemaDesignDTO = {
+  databaseName: string;
+  dialect: string;
+  tables: DesignTableDTO[];
+  relations: DesignRelationDTO[];
+  ddl: string;
+  indexCount: number;
+  normalization: string;
+  validation: string[];
+  notes: string;
+  generatedAt: string;
+};
+
+export async function designSchemaFromPrompt(
+  prompt: string,
+  dialect: string,
+): Promise<SchemaDesignDTO> {
+  const raw = await callGateway([
+    {
+      role: "system",
+      content: `You are a senior database architect. Design a normalized (3NF) ${dialect} schema from the user's requirements.
+
+Reply as JSON only:
+{
+  "databaseName": snake_case name,
+  "tables": [{"name": string, "columns": [{"name": string, "type": string, "key": "PK" | "FK" | null}]}],
+  "relations": [{"from": table, "to": table, "label": short text}],
+  "ddl": full ${dialect} DDL script as one string with newlines,
+  "indexCount": number of indexes in the DDL,
+  "normalization": e.g. "3NF Compliant",
+  "validation": 3-5 short check strings, e.g. "All tables have primary keys",
+  "notes": one short sentence of design advice
+}
+
+Rules:
+- 4 to 14 tables depending on the requirements; include junction tables where needed.
+- Every table has exactly one PK; mark foreign keys with "FK".
+- The DDL must create the database/tables, foreign keys and useful indexes, valid for ${dialect}.
+- Column list per table: keep the 4-8 most meaningful columns.`,
+    },
+    { role: "user", content: prompt },
+  ]);
+
+  const parsed = parseJson<Partial<SchemaDesignDTO>>(raw);
+  const tables = (Array.isArray(parsed.tables) ? parsed.tables : [])
+    .filter((t) => t && typeof t.name === "string")
+    .map((t) => ({
+      name: String(t.name),
+      columns: (Array.isArray(t.columns) ? t.columns : [])
+        .filter((c) => c && typeof c.name === "string")
+        .map((c) => ({
+          name: String(c.name),
+          type: String(c.type ?? ""),
+          key: c.key === "PK" || c.key === "FK" ? c.key : null,
+        })),
+    }));
+
+  if (tables.length === 0) throw new Error("The AI could not design a schema for that request.");
+
+  const names = new Set(tables.map((t) => t.name));
+  const relations = (Array.isArray(parsed.relations) ? parsed.relations : [])
+    .filter((r) => r && names.has(String(r.from)) && names.has(String(r.to)))
+    .map((r) => ({ from: String(r.from), to: String(r.to), label: String(r.label ?? "") }));
+
+  return {
+    databaseName: String(parsed.databaseName ?? "generated_db"),
+    dialect,
+    tables,
+    relations,
+    ddl: String(parsed.ddl ?? "").trim(),
+    indexCount: Number(parsed.indexCount ?? 0) || 0,
+    normalization: String(parsed.normalization ?? "3NF Compliant"),
+    validation: (Array.isArray(parsed.validation) ? parsed.validation : []).map(String).slice(0, 6),
+    notes: String(parsed.notes ?? ""),
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+export type ConnectedTable = { name: string; columns: string[] };
+
+export async function listLiveSchema(): Promise<{ database: string; tables: ConnectedTable[] }> {
+  const result = await runReadOnlySql(`SELECT c.table_name AS t,
+       string_agg(c.column_name, ',' ORDER BY c.ordinal_position) AS cols
+FROM information_schema.columns c
+WHERE c.table_schema = 'demo'
+GROUP BY c.table_name
+ORDER BY c.table_name`);
+
+  return {
+    database: "demo",
+    tables: result.rows.map((r) => ({
+      name: String(r["t"] ?? ""),
+      columns: String(r["cols"] ?? "").split(",").filter(Boolean),
+    })),
+  };
+}
