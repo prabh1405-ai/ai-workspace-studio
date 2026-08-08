@@ -1,4 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
 import { TopNav } from "@/components/dolphin/TopNav";
 import { DesignerSidebar } from "@/components/dolphin/DesignerSidebar";
 import { DescribeDatabasePanel } from "@/components/dolphin/DescribeDatabasePanel";
@@ -9,6 +12,8 @@ import {
   GeneratedSummaryPanel,
   ExportOptionsPanel,
 } from "@/components/dolphin/DesignerFooterPanels";
+import type { SchemaDesign } from "@/components/dolphin/schema-data";
+import { designSchema } from "@/lib/dolphin.functions";
 
 const title = "Database Designer — Dolphin AI Studio";
 const description =
@@ -27,23 +32,56 @@ export const Route = createFileRoute("/database-designer")({
 });
 
 function DatabaseDesigner() {
+  const design = useServerFn(designSchema);
+
+  const [prompt, setPrompt] = useState("");
+  const [dialect, setDialect] = useState("MySQL");
+  const [schema, setSchema] = useState<SchemaDesign | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  async function handleGenerate() {
+    setIsGenerating(true);
+    try {
+      const result = await design({ data: { prompt, dialect } });
+      setSchema(result as SchemaDesign);
+      toast.success(`Generated ${result.tables.length} tables for ${result.databaseName}`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not generate the schema");
+    } finally {
+      setIsGenerating(false);
+    }
+  }
+
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
       <TopNav />
       <div className="flex flex-1 gap-4 overflow-hidden p-4">
-        <DesignerSidebar />
+        <DesignerSidebar
+          design={schema}
+          onNewDesign={() => {
+            setSchema(null);
+            setPrompt("");
+          }}
+        />
         <main className="scroll-slim flex min-w-0 flex-1 flex-col gap-4 overflow-y-auto pr-1">
           <div className="flex gap-4">
             <div className="flex min-w-0 flex-1 flex-col gap-4">
-              <DescribeDatabasePanel />
-              <ErDiagram />
+              <DescribeDatabasePanel
+                prompt={prompt}
+                onPromptChange={setPrompt}
+                dialect={dialect}
+                onDialectChange={setDialect}
+                onGenerate={handleGenerate}
+                isGenerating={isGenerating}
+              />
+              <ErDiagram design={schema} />
             </div>
-            <SqlPreviewPanel />
+            <SqlPreviewPanel ddl={schema?.ddl ?? ""} />
           </div>
           <div className="grid gap-4 xl:grid-cols-3">
-            <SchemaValidationPanel />
-            <GeneratedSummaryPanel />
-            <ExportOptionsPanel />
+            <SchemaValidationPanel design={schema} />
+            <GeneratedSummaryPanel design={schema} />
+            <ExportOptionsPanel design={schema} />
           </div>
         </main>
       </div>

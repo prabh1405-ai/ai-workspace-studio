@@ -155,3 +155,22 @@ export const getProgress = createServerFn({ method: "GET" }).handler(async () =>
   const solved = new Set((attempts ?? []).map((a) => a.problem_id)).size;
   return { solved, total: total ?? 0 };
 });
+
+export const designSchema = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) =>
+    z
+      .object({
+        prompt: z.string().min(10).max(4000),
+        dialect: z.string().min(2).max(40).default("MySQL"),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data }) => {
+    const { designSchemaFromPrompt } = await import("./dolphin.server");
+    return designSchemaFromPrompt(data.prompt, data.dialect);
+  });
+
+export const listLiveTables = createServerFn({ method: "GET" }).handler(async () => {
+  const { listLiveSchema } = await import("./dolphin.server");
+  return listLiveSchema();
+});

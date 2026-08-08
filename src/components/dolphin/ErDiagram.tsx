@@ -1,12 +1,14 @@
-import { KeyRound, Link2, ZoomIn, ZoomOut, Maximize2, RefreshCw, LayoutGrid } from "lucide-react";
-import { ENTITIES, RELATIONS, type Entity } from "./schema-data";
+import { KeyRound, Link2, ZoomIn, ZoomOut, Maximize2, RefreshCw, LayoutGrid, Waypoints } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  layoutTables,
+  edgePath,
+  NODE_W,
+  type Accent,
+  type SchemaDesign,
+} from "./schema-data";
 
-const NODE_W = 150;
-const HEAD_H = 30;
-const ROW_H = 20;
-const PAD_B = 8;
-
-const ACCENT: Record<Entity["accent"], string> = {
+const ACCENT: Record<Accent, string> = {
   primary: "border-primary/60",
   accent: "border-accent/50",
   success: "border-success/50",
@@ -14,7 +16,7 @@ const ACCENT: Record<Entity["accent"], string> = {
   keyword: "border-code-keyword/50",
 };
 
-const HEAD_BG: Record<Entity["accent"], string> = {
+const HEAD_BG: Record<Accent, string> = {
   primary: "bg-primary/25",
   accent: "bg-accent/15",
   success: "bg-success/15",
@@ -22,59 +24,44 @@ const HEAD_BG: Record<Entity["accent"], string> = {
   keyword: "bg-code-keyword/15",
 };
 
-function nodeHeight(e: Entity) {
-  return HEAD_H + e.columns.length * ROW_H + PAD_B;
-}
+export function ErDiagram({ design }: { design: SchemaDesign | null }) {
+  const [scale, setScale] = useState(0.8);
+  const [grid, setGrid] = useState(true);
 
-function byId(id: string) {
-  const e = ENTITIES.find((n) => n.id === id);
-  if (!e) throw new Error(`Unknown entity ${id}`);
-  return e;
-}
+  const { placed, width, height } = useMemo(
+    () => layoutTables(design?.tables ?? []),
+    [design],
+  );
 
-function edgePath(fromId: string, toId: string, kind: "h" | "v") {
-  const a = byId(fromId);
-  const b = byId(toId);
+  const byName = useMemo(
+    () => new Map(placed.map((p) => [p.name, p])),
+    [placed],
+  );
 
-  if (kind === "h") {
-    const y1 = a.y + HEAD_H + ROW_H * 0.9;
-    const y2 = b.y + HEAD_H + ROW_H * 0.9;
-    const x1 = a.x + NODE_W;
-    const x2 = b.x;
-    const mx = (x1 + x2) / 2;
-    return `M ${x1} ${y1} H ${mx} V ${y2} H ${x2}`;
-  }
-
-  const ay = a.y + nodeHeight(a);
-  const by = b.y;
-  if (by > ay) {
-    const x1 = a.x + NODE_W * 0.35;
-    const x2 = b.x + NODE_W * 0.45;
-    const my = ay + (by - ay) / 2;
-    return `M ${x1} ${ay} V ${my} H ${x2} V ${by}`;
-  }
-  // target sits above the source
-  const x1 = a.x + NODE_W * 0.6;
-  const x2 = b.x + NODE_W * 0.5;
-  const my = b.y + nodeHeight(b) + (a.y - (b.y + nodeHeight(b))) / 2;
-  return `M ${x1} ${a.y} V ${my} H ${x2} V ${b.y + nodeHeight(b)}`;
-}
-
-const CANVAS_W = 880;
-const CANVAS_H = 570;
-const SCALE = 0.8;
-
-export function ErDiagram() {
   return (
     <section className="panel-surface p-5">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-[19px] font-semibold">ER Diagram</h2>
+        <h2 className="text-[19px] font-semibold">
+          ER Diagram
+          {design ? (
+            <span className="ml-2 text-[14px] font-normal text-muted-foreground">
+              {design.databaseName} · {design.tables.length} tables
+            </span>
+          ) : null}
+        </h2>
         <div className="flex items-center gap-2">
-          {[ZoomIn, ZoomOut, Maximize2, RefreshCw, LayoutGrid].map((Icon, i) => (
+          {[
+            { Icon: ZoomIn, label: "Zoom in", onClick: () => setScale((s) => Math.min(1.4, +(s + 0.1).toFixed(2))) },
+            { Icon: ZoomOut, label: "Zoom out", onClick: () => setScale((s) => Math.max(0.4, +(s - 0.1).toFixed(2))) },
+            { Icon: Maximize2, label: "Fit view", onClick: () => setScale(0.8) },
+            { Icon: RefreshCw, label: "Re-layout", onClick: () => setScale((s) => s) },
+            { Icon: LayoutGrid, label: "Toggle grid", onClick: () => setGrid((g) => !g) },
+          ].map(({ Icon, label, onClick }) => (
             <button
-              key={i}
+              key={label}
               type="button"
-              aria-label={["Zoom in", "Zoom out", "Fit view", "Re-layout", "Toggle grid"][i]}
+              aria-label={label}
+              onClick={onClick}
               className="rounded-lg border border-border bg-secondary/40 p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               <Icon className="h-[17px] w-[17px]" strokeWidth={1.8} />
@@ -83,63 +70,77 @@ export function ErDiagram() {
         </div>
       </div>
 
-      <div className="scroll-slim mt-4 overflow-auto rounded-xl border border-border bg-secondary/10 p-3">
-        <div style={{ height: CANVAS_H * SCALE, width: CANVAS_W * SCALE }}>
-        <div
-          className="relative origin-top-left"
-          style={{ width: CANVAS_W, height: CANVAS_H, transform: `scale(${SCALE})` }}
-        >
-          <svg
-            className="pointer-events-none absolute inset-0"
-            width={CANVAS_W}
-            height={CANVAS_H}
-            aria-hidden="true"
-          >
-            {RELATIONS.map((r, i) => (
-              <path
-                key={i}
-                d={edgePath(r.from, r.to, r.kind)}
-                fill="none"
-                stroke="var(--color-border)"
-                strokeWidth={1.5}
-              />
-            ))}
-          </svg>
-
-          {ENTITIES.map((e) => (
+      <div
+        className={`scroll-slim mt-4 overflow-auto rounded-xl border border-border p-3 ${grid ? "bg-secondary/10" : "bg-transparent"}`}
+      >
+        {design ? (
+          <div style={{ height: height * scale, width: width * scale }}>
             <div
-              key={e.id}
-              className={`absolute overflow-hidden rounded-lg border bg-card shadow-panel ${ACCENT[e.accent]}`}
-              style={{ left: e.x, top: e.y, width: NODE_W }}
+              className="relative origin-top-left"
+              style={{ width, height, transform: `scale(${scale})` }}
             >
-              <div
-                className={`flex h-[30px] items-center justify-center px-2 text-[12.5px] font-semibold ${HEAD_BG[e.accent]}`}
+              <svg
+                className="pointer-events-none absolute inset-0"
+                width={width}
+                height={height}
+                aria-hidden="true"
               >
-                <span className="truncate">{e.id}</span>
-              </div>
-              <ul className="py-1">
-                {e.columns.map((c) => (
-                  <li
-                    key={c.name}
-                    className="flex h-[20px] items-center gap-1.5 px-2 text-[11.5px] text-foreground/85"
-                  >
-                    {c.key === "PK" ? (
-                      <KeyRound className="h-3 w-3 shrink-0 text-code-number" strokeWidth={2.2} />
-                    ) : c.key === "FK" ? (
-                      <Link2 className="h-3 w-3 shrink-0 text-accent" strokeWidth={2.2} />
-                    ) : (
-                      <span className="w-3 shrink-0" />
-                    )}
-                    <span className="truncate">{c.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        </div>
-      </div>
+                {design.relations.map((r, i) => {
+                  const a = byName.get(r.from);
+                  const b = byName.get(r.to);
+                  if (!a || !b) return null;
+                  return (
+                    <path
+                      key={i}
+                      d={edgePath(a, b)}
+                      fill="none"
+                      stroke="var(--color-border)"
+                      strokeWidth={1.5}
+                    />
+                  );
+                })}
+              </svg>
 
+              {placed.map((t) => (
+                <div
+                  key={t.name}
+                  className={`absolute overflow-hidden rounded-lg border bg-card shadow-panel ${ACCENT[t.accent]}`}
+                  style={{ left: t.x, top: t.y, width: NODE_W }}
+                >
+                  <div
+                    className={`flex h-[30px] items-center justify-center px-2 text-[12.5px] font-semibold ${HEAD_BG[t.accent]}`}
+                  >
+                    <span className="truncate">{t.name}</span>
+                  </div>
+                  <ul className="py-1">
+                    {t.columns.map((c) => (
+                      <li
+                        key={c.name}
+                        title={`${c.name} ${c.type}`}
+                        className="flex h-[20px] items-center gap-1.5 px-2 text-[11.5px] text-foreground/85"
+                      >
+                        {c.key === "PK" ? (
+                          <KeyRound className="h-3 w-3 shrink-0 text-code-number" strokeWidth={2.2} />
+                        ) : c.key === "FK" ? (
+                          <Link2 className="h-3 w-3 shrink-0 text-accent" strokeWidth={2.2} />
+                        ) : (
+                          <span className="w-3 shrink-0" />
+                        )}
+                        <span className="truncate">{c.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex h-[220px] flex-col items-center justify-center gap-2 text-center text-muted-foreground">
+            <Waypoints className="h-7 w-7" strokeWidth={1.6} />
+            <p className="text-[15px]">No schema yet — describe your database above and generate.</p>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
