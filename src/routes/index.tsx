@@ -33,9 +33,7 @@ function Workspace() {
   const generate = useServerFn(generateSql);
   const run = useServerFn(runQuery);
 
-  const [prompt, setPrompt] = useState(
-    "Show top 10 customers who spent the most money in the last 3 months.",
-  );
+  const [prompt, setPrompt] = useState("");
   const [language, setLanguage] = useState("English");
   const [sql, setSql] = useState("");
   const [steps, setSteps] = useState<ExplanationStep[]>([]);
