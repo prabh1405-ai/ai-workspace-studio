@@ -66,8 +66,8 @@ export const explainQuery = createServerFn({ method: "POST" })
   });
 
 export const listHistory = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabase } = await import("@/integrations/supabase/client");
-  const { data, error } = await supabase
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin
     .from("query_history")
     .select("id, prompt, sql, row_count, duration_ms, status, error, created_at")
     .order("created_at", { ascending: false })
@@ -148,9 +148,10 @@ export const checkAnswer = createServerFn({ method: "POST" })
 
 export const getProgress = createServerFn({ method: "GET" }).handler(async () => {
   const { supabase } = await import("@/integrations/supabase/client");
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const [{ count: total }, { data: attempts }] = await Promise.all([
     supabase.from("practice_problems").select("id", { count: "exact", head: true }),
-    supabase.from("practice_attempts").select("problem_id, is_correct").eq("is_correct", true),
+    supabaseAdmin.from("practice_attempts").select("problem_id, is_correct").eq("is_correct", true),
   ]);
   const solved = new Set((attempts ?? []).map((a) => a.problem_id)).size;
   return { solved, total: total ?? 0 };
