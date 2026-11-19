@@ -1,0 +1,1062 @@
+# DOLPHIN AI STUDIO
+## An Intelligent Natural Language Database Engineering and SQL Learning Workspace
+
+# CHAPTER 1
+# INTRODUCTION
+
+## 1.1 Introduction and Project Background
+
+Databases are an important part of modern software applications. Websites, mobile applications, hospitals, banking systems, educational platforms and business applications use databases to store and manage information. SQL (Structured Query Language) is commonly used to create database structures, retrieve information, update records and manage relationships between tables.
+
+However, working with databases requires knowledge of SQL syntax, table structures, primary keys, foreign keys, joins and database design. Beginners and non-technical users often find it difficult to convert their requirements into correct SQL statements. Even experienced developers spend time writing queries, designing database schemas and correcting structural errors.
+
+Recent developments in Artificial Intelligence and Large Language Models have made it possible to understand natural language and generate structured code. Natural Language to SQL systems allow users to describe their data requirements in simple English and receive corresponding SQL queries.
+
+Dolphin AI Studio is proposed as an intelligent database workspace that combines natural language SQL generation, AI-powered explanations, database design, conversational modification and SQL learning. Users can interact with the system through a familiar database development interface without depending entirely on manual SQL coding.
+
+The platform also introduces an AI Database Designer that converts business requirements into complete database structures. It analyzes entities, relationships and constraints, identifies missing requirements and generates SQL scripts with visual ER diagrams.
+
+## 1.2 Problem Statement
+
+Traditional database development requires users to have sufficient knowledge of SQL and relational database concepts. Converting business requirements into database structures and SQL queries can be difficult for beginners and time-consuming for developers.
+
+Existing AI-based query generation tools can generate SQL from natural language, but users may still face problems understanding the generated queries, validating database structures and managing changes to existing schemas.
+
+The major problems include:
+
+- Difficulty in converting natural language into correct SQL queries.
+- Lack of SQL knowledge among non-technical users.
+- Difficulty in designing complete database structures from business requirements.
+- Missing or unclear relationships between database tables.
+- Limited understanding of generated SQL statements.
+- Manual creation of ER diagrams and database documentation.
+- Difficulty in identifying missing or ambiguous database requirements.
+- Repeated database modifications requiring manual SQL changes.
+- Limited integration between SQL learning and database development.
+
+Therefore, there is a need for an integrated intelligent workspace that simplifies SQL generation, database design, validation, visualization and learning through natural language interaction.
+
+## 1.3 Motivation and Need for the Project
+
+The main motivation for developing Dolphin AI Studio is to reduce the gap between human language and database development.
+
+Many people understand what information they need from a database but do not know how to express their requirements using SQL. Similarly, developers may understand the business requirements of an application but need time to convert them into a complete relational database structure.
+
+The project is motivated by the following requirements:
+
+- To make database operations accessible to non-technical users.
+- To reduce the time required for writing SQL queries.
+- To help students understand SQL through simple explanations.
+- To generate complete database structures from business requirements.
+- To identify missing information before generating database schemas.
+- To provide automatic validation of generated database structures.
+- To simplify database modifications through conversational instructions.
+- To provide a single workspace for database learning and development.
+
+## 1.4 Aim and Objectives
+
+**Aim**
+
+To develop an AI-powered natural language database engineering workspace that converts user requirements into SQL queries and complete database structures while providing explanations, validation, visualization and interactive SQL learning.
+
+**Objectives**
+
+- To develop a natural language interface for generating SQL queries.
+- To generate SQL statements from English and supported language inputs.
+- To provide simple explanations for generated SQL queries.
+- To develop an interactive SQL practice environment.
+- To create complete database schemas from business requirements.
+- To identify entities, attributes, relationships and constraints.
+- To detect missing and ambiguous database requirements.
+- To generate a structured database blueprint before SQL generation.
+- To validate generated database structures.
+- To automatically generate Entity Relationship Diagrams.
+- To support conversational database modifications.
+- To maintain database versions and generate incremental SQL changes.
+- To provide SQL scripts and database documentation for export.
+
+## 1.5 Scope of the Project
+
+The project focuses on developing an integrated AI-based SQL workspace for database query generation, database design and SQL learning.
+
+The system covers two major working environments: Query Workspace and AI Database Designer.
+
+The Query Workspace allows users to enter natural language questions and generate corresponding SQL statements. It also provides query explanations, voice input, multilingual support and an interactive practice environment.
+
+The AI Database Designer allows users to describe complete application requirements, such as an e-commerce, hospital or student management system. The system analyzes the requirements, identifies entities and relationships, creates a structured database blueprint and generates the corresponding SQL script.
+
+The system also includes schema validation, ER diagram generation, conversational database modification, version management and export functionality.
+
+The initial implementation focuses on relational database systems such as MySQL and PostgreSQL. Advanced enterprise database administration, unrestricted production database modification and support for every database technology are outside the initial scope.
+
+## 1.6 Organization of the Report
+
+Chapter 1 introduces the project background, problem statement, motivation, objectives and scope.
+
+Chapter 2 reviews the related research papers, existing approaches, research gap and limitations of current systems.
+
+Chapter 3 presents the proposed system, its architecture, functional and non-functional requirements, hardware and software requirements, and expected contributions.
+
+Chapter 4 explains the methodology, individual modules, algorithms, database blueprint generation, validation techniques, tools and technologies.
+
+Chapter 5 describes the implementation plan, module-wise implementation, application screenshots, preliminary evaluation and challenges encountered.
+
+Chapter 6 presents the project timeline, work breakdown, team contributions, completed work and future implementation plan.
+
+Chapter 7 provides the project summary, conclusion and planned enhancements. The report ends with references and an appendix containing the application source code.
+
+---
+
+# CHAPTER 2
+# LITERATURE REVIEW
+
+## 2.1 Introduction
+
+This chapter reviews research related to Natural Language to SQL generation, Large Language Models, database schema understanding, SQL validation and conversational database interfaces.
+
+Artificial Intelligence has introduced new methods for converting human language into structured database queries. However, generating accurate SQL requires understanding the user's intention, identifying the correct database tables and columns, understanding relationships and producing syntactically valid queries.
+
+The reviewed research provides the technical foundation for developing Dolphin AI Studio and helps identify the limitations that the proposed system aims to address.
+
+## 2.2 Review of Relevant Research Papers
+
+**1. PICARD: Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models (2021)**
+
+Torsten Scholak, Nathan Schucher and Dzmitry Bahdanau introduced PICARD, a method that improves SQL generation by checking generated tokens during the decoding process. It prevents invalid SQL sequences by rejecting tokens that do not satisfy parsing constraints.
+
+This research demonstrates the importance of controlling generated SQL output and reducing syntax errors. Dolphin AI Studio uses the same general motivation for including a separate SQL validation stage, although its implementation and validation approach must be developed independently. [1]
+
+**2. DIN-SQL: Decomposed In-Context Learning of Text-to-SQL with Self-Correction (2023)**
+
+Mohammadreza Pourreza and Davood Rafiei proposed a method that divides Text-to-SQL generation into smaller reasoning tasks. Instead of generating the complete SQL query in one step, the system uses multiple stages and self-correction.
+
+This research supports the idea of separating user-intent understanding, schema identification and SQL generation into individual processing stages. [2]
+
+**3. A Survey of NL2SQL with Large Language Models: Where Are We, and Where Are We Going? (2024)**
+
+Xinyu Liu and other researchers reviewed the use of Large Language Models for converting natural language into SQL.
+
+The study discusses schema linking, natural language ambiguity, database information, evaluation methods and error analysis. It identifies the importance of understanding database structures before generating queries.
+
+This research provides a foundation for the schema-aware processing approach proposed in Dolphin AI Studio. [3]
+
+**4. Next-Generation Database Interfaces: A Survey of LLM-Based Text-to-SQL (2024)**
+
+Zijin Hong and other researchers studied the development of database interfaces using Large Language Models.
+
+The research discusses challenges involving complex database schemas, natural language understanding, query generation and evaluation.
+
+It supports the need for intelligent database interfaces that help users interact with databases without requiring extensive SQL knowledge. [4]
+
+**5. Representing Schema Structure with Graph Neural Networks for Text-to-SQL Parsing (2019)**
+
+Ben Bogin, Matt Gardner and Jonathan Berant studied how database schema relationships can improve natural language to SQL parsing.
+
+Their work demonstrates that relationships between tables and columns are important when generating queries across complex databases.
+
+This research supports the use of database relationship information and ER-based representations in Dolphin AI Studio. [5]
+
+## 2.3 Comparative Summary of Existing Approaches
+
+**Table 2.1 Summary of Related Research**
+
+| Reference | Research contribution | Relevance to Dolphin AI Studio |
+|---|---|---|
+| PICARD (2021) | Constrained SQL generation | SQL validation |
+| DIN-SQL (2023) | Decomposed SQL generation and correction | Multi-stage AI processing |
+| Liu et al. (2024) | Survey of LLM-based NL2SQL | Natural language understanding |
+| Hong et al. (2024) | LLM-based database interfaces | Intelligent database workspace |
+| Bogin et al. (2019) | Database schema graph representation | Relationship understanding |
+
+## 2.4 Research Gap
+
+Existing research has made significant progress in natural language SQL generation and schema-aware query processing. However, database development involves more than converting a question into an SQL statement.
+
+Several practical requirements remain important:
+
+- Users need assistance in converting incomplete business requirements into structured database designs.
+- Ambiguous relationships should be identified before generating database structures.
+- Generated schemas require structural and relational validation.
+- Users need to understand why particular tables and relationships are created.
+- Existing database structures need controlled modifications when requirements change.
+- SQL learning and professional database development can be combined within one workspace.
+
+Dolphin AI Studio addresses these requirements through an integrated workflow involving requirement analysis, database blueprint generation, validation, SQL generation, visualization and conversational modification.
+
+The proposed system focuses on combining these capabilities rather than treating SQL generation as an isolated operation.
+
+## 2.5 Existing System and Its Limitations
+
+Existing database development tools and AI assistants provide different capabilities.
+
+Examples include ChatGPT, Google Gemini, Microsoft Copilot, MySQL Workbench and other Text-to-SQL solutions.
+
+**Common capabilities of existing systems:**
+
+- Natural language to SQL generation.
+- SQL syntax assistance.
+- Database query execution.
+- Database table management.
+- AI-based code explanations.
+- Database visualization through separate tools.
+
+**Limitations addressed by the proposed project:**
+
+- Users may need separate tools for query generation, schema design and visualization.
+- Generated SQL may require manual validation.
+- Incomplete requirements may produce unsuitable database structures.
+- Database changes may require manually identifying affected tables.
+- Learning and database development are often handled through separate workflows.
+- Users may need to manually maintain documentation and schema versions.
+
+**Table 2.2 Comparison of Existing Approaches and the Proposed System**
+
+| Existing approaches | Dolphin AI Studio |
+|---|---|
+| Natural language query generation | Integrated natural language SQL workspace |
+| Separate database design process | AI-based complete database designer |
+| Manual identification of missing requirements | Requirement completeness and ambiguity analysis |
+| SQL output may require separate validation | Integrated SQL and schema validation |
+| Separate ER diagram generation | Automatic ER diagram generation |
+| Manual schema modification | Conversational schema modification |
+| Limited integrated SQL practice | Dedicated SQL practice mode |
+| Separate documentation process | SQL and database documentation export |
+
+---
+
+# CHAPTER 3
+# PROPOSED SYSTEM
+
+## 3.1 Overview of the Proposed System
+
+Dolphin AI Studio is an AI-powered database workspace designed to simplify SQL development and database design through natural language interaction.
+
+The system provides users with a familiar database development environment combined with AI-powered assistance.
+
+The application consists of two primary working environments.
+
+**1. Query Workspace**
+
+This environment allows users to enter questions in natural language and receive SQL queries. The generated queries are displayed in an SQL editor, while an explanation panel describes the SQL logic.
+
+**2. AI Database Designer**
+
+This environment allows users to describe complete application requirements. The AI analyzes the requirements, identifies entities, attributes and relationships, generates a structured database blueprint, validates the design and produces a complete SQL script.
+
+Additional features include Practice Mode, multilingual input, automatic ER diagram generation, conversational database modification, history and export.
+
+## 3.2 Proposed Solution and Key Features
+
+The proposed system provides the following features:
+
+**Natural Language SQL Generation**
+
+Users can enter database questions in simple English and receive the corresponding SQL query.
+
+**AI SQL Explanation**
+
+Generated queries are explained in simple language, including the purpose of SQL statements and conditions.
+
+**SQL Practice Mode**
+
+Students can solve SQL questions and receive feedback, error identification and suggested corrections.
+
+**Voice and Multilingual Input**
+
+Users can provide requirements through supported voice and language input methods.
+
+**AI Database Designer**
+
+Users can describe a complete application requirement, and the system generates a relational database structure.
+
+**Requirement Completeness Analysis**
+
+The system identifies missing information and asks relevant questions before finalizing the database design.
+
+**Database Blueprint Generation**
+
+The system creates an intermediate structured representation containing entities, attributes, relationships and constraints.
+
+**Schema Validation**
+
+The generated database design is checked for structural and relational problems.
+
+**Automatic ER Diagram Generation**
+
+The system converts the database schema into a visual Entity Relationship Diagram.
+
+**Conversational Database Modification**
+
+Users can request additional tables, attributes or relationships through follow-up instructions.
+
+**Database Version Management**
+
+The system maintains different database design versions for reviewing changes.
+
+**Export Center**
+
+Users can export SQL scripts, ER diagrams and database documentation.
+
+## 3.3 System Architecture
+
+The proposed system follows a modular architecture consisting of frontend, backend, AI processing, database blueprint generation, validation and database output layers.
+
+[INSERT FIGURE 3.1 HERE — SYSTEM ARCHITECTURE OF DOLPHIN AI STUDIO]
+
+*Figure 3.1 System Architecture*
+
+**Architecture explanation:**
+
+1. User: Provides requirements through text or voice.
+2. Frontend: Displays the Query Workspace, Database Designer, SQL editor and other modules.
+3. Backend API: Receives user requests and manages communication between system components.
+4. AI Processing Layer: Understands natural language and identifies user intentions.
+5. Query Generator: Converts database questions into SQL queries.
+6. Database Blueprint Generator: Converts application requirements into structured database designs.
+7. Validation Engine: Checks generated SQL and database structures.
+8. Explanation Engine: Explains generated SQL and design decisions.
+9. ER Diagram Generator: Creates visual representations of database relationships.
+10. Database Layer: Supports MySQL and PostgreSQL connections where configured.
+11. Export Layer: Produces SQL scripts, diagrams and documentation.
+
+## 3.4 Functional Requirements
+
+The system should provide the following functional requirements:
+
+- The user should be able to enter natural language questions.
+- The system should generate corresponding SQL queries.
+- The system should display explanations for generated SQL.
+- The user should be able to copy and export SQL statements.
+- The system should support SQL practice and answer evaluation.
+- The user should be able to provide complete database requirements.
+- The system should identify entities, attributes and relationships.
+- The system should identify missing or ambiguous requirements.
+- The system should generate a structured database blueprint.
+- The system should generate complete SQL database scripts.
+- The system should validate generated database structures.
+- The system should generate ER diagrams.
+- The system should support conversational database modifications.
+- The system should maintain database design history.
+- The system should allow users to export generated files.
+
+## 3.5 Non-Functional Requirements
+
+**Performance:** The system should process user requirements and generate responses within a reasonable time.
+
+**Usability:** The interface should be simple and familiar to users who have experience with database development tools.
+
+**Reliability:** The system should handle invalid inputs and generation failures without crashing.
+
+**Scalability:** The architecture should support additional database systems and AI models.
+
+**Security:** User data and database connection details should be protected through appropriate authentication and access controls.
+
+**Maintainability:** The application should use modular components so individual features can be updated independently.
+
+**Accuracy:** Generated SQL and database structures should be validated before being presented as ready for use.
+
+**Compatibility:** The system should support the selected relational database platforms.
+
+## 3.6 Hardware and Software Requirements
+
+**Table 3.1 Software Requirements**
+
+| Component | Technology |
+|---|---|
+| Frontend | React.js |
+| Styling | Tailwind CSS |
+| SQL Editor | Monaco Editor |
+| Backend | Python |
+| Backend Framework | FastAPI |
+| AI Model | Large Language Model API |
+| Database | MySQL / PostgreSQL |
+| Diagram Generation | React Flow / Mermaid.js |
+| Voice Processing | Web Speech API / Whisper |
+| Development Environment | Visual Studio Code |
+| Version Control | Git and GitHub |
+
+**Hardware requirements**
+
+- Processor: Intel Core i5 or equivalent.
+- RAM: Minimum 8 GB.
+- Storage: Minimum 10 GB available space.
+- Internet: Required for cloud-based AI services.
+- Display: Standard desktop or laptop display.
+
+These are proposed development requirements and can be adjusted according to the final deployment environment.
+
+## 3.7 Advantages and Expected Contribution
+
+- Reduces the need for manual SQL writing.
+- Makes database operations easier for non-technical users.
+- Simplifies database design from business requirements.
+- Helps students understand SQL through explanations.
+- Identifies missing database requirements before generation.
+- Provides automated database structure validation.
+- Generates ER diagrams automatically.
+- Supports conversational database modifications.
+- Reduces the need to switch between multiple tools.
+- Provides an integrated environment for SQL learning and development.
+
+The expected contribution is a unified database engineering workspace that combines natural language interaction, requirement analysis, database design, SQL generation, validation and learning.
+
+---
+
+# CHAPTER 4
+# METHODOLOGY AND DESIGN
+
+## 4.1 Overall Methodology and Workflow
+
+The system follows a multi-stage workflow to convert user requirements into SQL queries or complete database structures.
+
+The process begins with user input through the Query Workspace or AI Database Designer.
+
+For query generation, the system analyzes the user's question, identifies the database intent and generates the corresponding SQL statement.
+
+For database design, the system analyzes the business requirements, identifies entities and relationships, checks for missing information and generates a structured database blueprint.
+
+The generated output passes through validation before being displayed to the user.
+
+[INSERT FIGURE 4.1 HERE — DOLPHIN AI STUDIO SYSTEM WORKFLOW]
+
+*Figure 4.1 System Workflow*
+
+**Workflow stages:**
+
+1. User requirement input.
+2. Natural language processing.
+3. Intent and requirement analysis.
+4. Entity and relationship extraction.
+5. Requirement completeness checking.
+6. Database blueprint generation.
+7. SQL generation.
+8. SQL and schema validation.
+9. Explanation and ER diagram generation.
+10. Output review and export.
+
+## 4.2 Module Description
+
+The application is divided into the following modules.
+
+**1. Natural Language Input Module**
+
+Accepts user requirements through text or supported voice input.
+
+**2. Query Generation Module**
+
+Analyzes user questions and generates the corresponding SQL queries.
+
+**3. SQL Explanation Module**
+
+Provides simple explanations for SQL statements, clauses and conditions.
+
+**4. Practice Module**
+
+Provides SQL exercises and evaluates user-submitted answers.
+
+**5. Requirement Analysis Module**
+
+Extracts entities, attributes, relationships and business rules from user requirements.
+
+**6. Requirement Completeness Module**
+
+Identifies missing information and ambiguous relationships and generates clarification questions.
+
+**7. Database Blueprint Module**
+
+Creates a structured representation of the required database before generating SQL.
+
+**8. Schema Validation Module**
+
+Checks primary keys, foreign keys, data types, constraints and relationship consistency.
+
+**9. Conversational Modification Module**
+
+Processes follow-up requirements and identifies changes required in the existing database design.
+
+**10. ER Diagram Module**
+
+Generates visual database relationship diagrams.
+
+**11. Version Management Module**
+
+Maintains database design versions and records modifications.
+
+**12. Export Module**
+
+Generates SQL scripts, ER diagrams and database documentation.
+
+## 4.3 Algorithm and Technique Description
+
+### 4.3.1 Natural Language Understanding
+
+The system receives a natural language request and processes it using an AI language model.
+
+The processing stage identifies the action requested by the user, such as retrieving information, inserting records, updating data or creating a database.
+
+The extracted information is converted into a structured representation that can be used by the next processing stage.
+
+### 4.3.2 Intent Detection
+
+The system identifies whether the user requires:
+
+- SQL query generation.
+- SQL explanation.
+- Database creation.
+- Schema modification.
+- SQL practice.
+- Database information.
+
+Based on the detected intent, the request is forwarded to the appropriate module.
+
+### 4.3.3 Database Entity and Relationship Extraction
+
+For database design, the system identifies entities, attributes and relationships from the user's requirements.
+
+Example:
+
+User requirement:
+
+"Create an e-commerce database with customers, products and orders."
+
+Extracted entities:
+
+- Customer
+- Product
+- Order
+
+Possible relationships:
+
+- One customer can place multiple orders.
+- One order can contain multiple products.
+- One product can appear in multiple orders.
+
+A junction table such as Order_Items is required to represent the many-to-many relationship between orders and products.
+
+### 4.3.4 Requirement Completeness and Ambiguity Detection
+
+The system checks whether the user's requirements provide enough information to create a meaningful database structure.
+
+For example, if a user requests an employee database with departments, the system may ask whether an employee can belong to one department or multiple departments.
+
+The system uses the answer to complete the database blueprint before generating the SQL structure.
+
+### 4.3.5 Database Blueprint Generation
+
+The system converts the extracted requirements into an intermediate database representation.
+
+The blueprint contains:
+
+- Entity names.
+- Attribute names.
+- Data types.
+- Primary keys.
+- Foreign keys.
+- Relationships.
+- Constraints.
+- Business rules.
+
+This representation separates database understanding from final SQL generation.
+
+### 4.3.6 SQL Generation
+
+The structured database blueprint is passed to the SQL generation module.
+
+The system generates the required SQL statements, including:
+
+- CREATE DATABASE.
+- CREATE TABLE.
+- PRIMARY KEY.
+- FOREIGN KEY.
+- UNIQUE constraints.
+- NOT NULL constraints.
+- INDEX creation.
+- INSERT statements.
+
+The generated script follows the selected database dialect.
+
+### 4.3.7 Schema Validation and Repair
+
+The generated schema is checked for structural and relational problems.
+
+The validation process includes:
+
+- Missing primary keys.
+- Invalid foreign key references.
+- Data-type mismatches.
+- Duplicate entity definitions.
+- Missing junction tables.
+- Invalid relationship definitions.
+- Constraint conflicts.
+- SQL syntax errors.
+
+If an error is identified, the system can attempt a correction and validate the revised output again.
+
+### 4.3.8 Conversational Schema Modification
+
+The system maintains the current database design as context for follow-up requests.
+
+For example:
+
+Initial requirement:
+
+"Create an e-commerce database."
+
+Additional requirement:
+
+"Add a subscription system."
+
+The system identifies the affected entities and generates the required database changes without unnecessarily recreating the complete schema.
+
+### 4.3.9 Database Version Management
+
+Every approved modification can create a new database design version.
+
+The system maintains the previous and updated structures to help users review changes and understand the evolution of their database.
+
+### 4.3.10 SQL Explanation and Practice Evaluation
+
+The explanation module describes generated SQL in simple language.
+
+The practice module evaluates user-written SQL using syntax checks, expected query results and logical comparison where applicable.
+
+Feedback is provided to help users identify and correct errors.
+
+## 4.4 Dataset and Data Preprocessing
+
+The proposed system uses natural language requirements and relational database schemas as its primary inputs.
+
+Unlike conventional supervised machine learning projects, the initial implementation can use an existing Large Language Model through an API rather than training a new language model from scratch.
+
+The input data includes:
+
+- Natural language database questions.
+- Application development requirements.
+- Database table definitions.
+- Column names and data types.
+- Primary and foreign key information.
+- SQL practice questions.
+- Expected query outputs.
+
+The preprocessing stage involves:
+
+- Removing unnecessary input formatting.
+- Identifying important entities and keywords.
+- Extracting database actions.
+- Identifying relationships and constraints.
+- Structuring requirements into machine-readable data.
+- Validating the generated blueprint before SQL generation.
+
+For evaluation, test requirements can be prepared for different domains, including e-commerce, hospital management, student management and inventory management.
+
+## 4.5 System Design
+
+The system follows a modular design in which frontend components communicate with backend services through APIs.
+
+The frontend provides separate interfaces for query generation, database design, SQL explanation, practice and history.
+
+The backend processes requests and communicates with the AI model, validation services and database systems.
+
+The database blueprint acts as an intermediate representation between natural language requirements and final SQL generation.
+
+This approach helps separate requirement understanding, database design and SQL generation.
+
+The generated schema is used to create the ER diagram and supporting documentation.
+
+[INSERT FIGURE 4.2 HERE — DATABASE BLUEPRINT AND SCHEMA GENERATION PROCESS]
+
+*Figure 4.2 Database Blueprint Generation Process*
+
+## 4.6 Tools and Technologies Used
+
+**Frontend**
+
+- React.js: Used to develop the interactive application interface.
+- Tailwind CSS: Used for responsive styling and layout.
+- Monaco Editor: Used to provide an SQL editing environment.
+- React Flow / Mermaid.js: Used for database diagram visualization.
+
+**Backend**
+
+- Python: Used for backend processing and AI integration.
+- FastAPI: Used to develop API endpoints and communicate with the frontend.
+
+**Artificial Intelligence**
+
+- Large Language Model API: Used for natural language understanding, SQL generation, explanation and requirement analysis.
+- Prompt Engineering: Used to structure AI requests and control generated outputs.
+
+**Database**
+
+- MySQL: Used as the primary relational database target.
+- PostgreSQL: Used for additional database compatibility.
+
+**Voice Processing**
+
+- Web Speech API or Whisper: Used for voice input and speech-to-text conversion.
+
+**Development Tools**
+
+- Visual Studio Code.
+- Git and GitHub.
+- Postman.
+- Browser Developer Tools.
+
+---
+
+# CHAPTER 5
+# PRELIMINARY IMPLEMENTATION AND RESULTS
+
+## 5.1 Implementation Plan and Current Status
+
+The implementation of Dolphin AI Studio is planned in stages based on its modular architecture.
+
+The initial stage focuses on developing the frontend workspace and backend API. The next stage focuses on natural language processing and SQL generation.
+
+After the query workspace is established, the AI Database Designer will be implemented with requirement analysis, database blueprint generation and SQL validation.
+
+The remaining stages include ER diagram generation, conversational database modification, practice mode, version management and export functionality.
+
+The final implementation will be evaluated through functional testing and sample database design scenarios.
+
+**Note:** The completion status in this section must be updated according to the actual development progress before final submission.
+
+## 5.2 Module-Wise Work Completed
+
+**Table 5.1 Module-Wise Implementation Status**
+
+| Module | Planned implementation | Status |
+|---|---|---|
+| User Interface | React-based SQL workspace | To be updated |
+| Query Generator | Natural language to SQL | To be updated |
+| SQL Explanation | AI-powered explanation | To be updated |
+| Practice Mode | SQL answer evaluation | To be updated |
+| Database Designer | Requirement-to-schema generation | To be updated |
+| Requirement Analyzer | Entity and relationship extraction | To be updated |
+| Validation Engine | SQL and schema validation | To be updated |
+| ER Diagram | Automatic relationship visualization | To be updated |
+| Conversational Modification | Incremental schema changes | To be updated |
+| Export Module | SQL and documentation export | To be updated |
+
+## 5.3 Prototype and Interface Screenshots
+
+The application is designed with a database IDE-inspired interface that provides a familiar working environment.
+
+The following screenshots will be included after the final application implementation.
+
+[INSERT FIGURE 5.1 HERE — DOLPHIN AI STUDIO HOME / QUERY WORKSPACE]
+
+*Figure 5.1 Dolphin AI Studio Query Workspace*
+
+[INSERT FIGURE 5.2 HERE — AI SQL EXPLANATION PANEL]
+
+*Figure 5.2 AI-Powered SQL Explanation Interface*
+
+[INSERT FIGURE 5.3 HERE — SQL PRACTICE MODE]
+
+*Figure 5.3 SQL Practice Environment*
+
+[INSERT FIGURE 5.4 HERE — AI DATABASE DESIGNER]
+
+*Figure 5.4 AI Database Designer Interface*
+
+[INSERT FIGURE 5.5 HERE — GENERATED ER DIAGRAM]
+
+*Figure 5.5 Automatically Generated Entity Relationship Diagram*
+
+[INSERT FIGURE 5.6 HERE — DATABASE HISTORY PAGE]
+
+*Figure 5.6 Database History and Version Management*
+
+## 5.4 Preliminary Results and Evaluation
+
+The system will be evaluated using different natural language queries and database design requirements.
+
+The evaluation will focus on the following measures:
+
+**SQL Generation Accuracy**
+
+Checks whether the generated SQL correctly represents the user's natural language requirement.
+
+**SQL Execution Success**
+
+Checks whether the generated query executes successfully against the selected database.
+
+**Schema Completeness**
+
+Checks whether all required entities, attributes and relationships are included.
+
+**Schema Validation**
+
+Measures the ability to identify missing keys, invalid relationships and structural errors.
+
+**Requirement Understanding**
+
+Checks whether the system correctly identifies missing or ambiguous requirements.
+
+**Conversational Modification Accuracy**
+
+Checks whether follow-up instructions produce the required database changes without damaging existing structures.
+
+**Practice Evaluation**
+
+Checks whether the system correctly identifies errors in student-written SQL.
+
+Actual evaluation results, test counts and accuracy percentages will be added after testing.
+
+## 5.5 Challenges Encountered and Corrective Measures
+
+### 5.5.1 Natural Language Understanding
+
+**Challenges**
+
+- Users may describe the same requirement in different ways.
+- Some questions may contain incomplete information.
+- Business requirements may include multiple database operations.
+
+**Corrective measures**
+
+- Use structured prompt processing.
+- Separate intent detection from SQL generation.
+- Use requirement clarification when necessary.
+- Maintain context for follow-up requests.
+
+### 5.5.2 Database Schema Generation
+
+**Challenges**
+
+- Complex requirements may contain multiple entities.
+- Relationships may be unclear.
+- Incorrect data types and constraints can affect database consistency.
+
+**Corrective measures**
+
+- Generate a structured database blueprint.
+- Identify entities and relationships before generating SQL.
+- Apply primary key and foreign key checks.
+- Validate the generated schema.
+
+### 5.5.3 SQL Generation and Validation
+
+**Challenges**
+
+- AI-generated queries may contain syntax errors.
+- Different database platforms use different SQL dialects.
+- Queries may reference unavailable tables or columns.
+
+**Corrective measures**
+
+- Use dialect-specific generation instructions.
+- Validate generated SQL using a SQL parser.
+- Check generated queries against database metadata.
+- Provide corrective feedback when errors are identified.
+
+### 5.5.4 Conversational Database Modification
+
+**Challenges**
+
+- Follow-up instructions may affect existing tables.
+- Repeated modifications may create conflicting structures.
+- The system must preserve existing relationships.
+
+**Corrective measures**
+
+- Maintain the current database blueprint.
+- Identify affected entities before generating changes.
+- Generate incremental migration scripts.
+- Maintain schema versions for review.
+
+### 5.5.5 Frontend and Backend Integration
+
+**Challenges**
+
+- Multiple AI modules must communicate with the same backend.
+- Large SQL outputs require proper editor handling.
+- The application must display errors and results clearly.
+
+**Corrective measures**
+
+- Use modular FastAPI endpoints.
+- Maintain structured API responses.
+- Separate AI processing from frontend presentation.
+- Use a consistent database workspace layout.
+
+---
+
+# CHAPTER 6
+# PROJECT PLANNING AND PROGRESS
+
+## 6.1 Project Timeline
+
+The project is divided into different development stages to ensure that the major modules are implemented and tested systematically.
+
+**Table 6.1 Project Development Schedule**
+
+| Stage | Work description | Report section |
+|---|---|---|
+| Stage 1 | Problem identification and project planning | Chapter 1 |
+| Stage 2 | Literature survey and existing-system analysis | Chapter 2 |
+| Stage 3 | System architecture and proposed solution | Chapter 3 |
+| Stage 4 | Methodology and module design | Chapter 4 |
+| Stage 5 | Frontend and backend development | Chapter 5 |
+| Stage 6 | AI integration and database testing | Chapter 5 |
+| Stage 7 | Final evaluation and documentation | Chapters 6 and 7 |
+
+Actual dates can be added according to the department review schedule.
+
+## 6.2 Work Breakdown and Team-Member Contributions
+
+The project can be divided into the following work packages.
+
+**Table 6.2 Work Packages and Status**
+
+| No. | Work package | Status |
+|---|---|---|
+| 1 | Problem definition and literature survey | To be updated |
+| 2 | System architecture and UI design | To be updated |
+| 3 | Frontend development | To be updated |
+| 4 | Backend API development | To be updated |
+| 5 | AI query generation and explanation | To be updated |
+| 6 | AI Database Designer and blueprint generation | To be updated |
+| 7 | Validation and ER diagram generation | To be updated |
+| 8 | Practice mode and conversational modification | To be updated |
+| 9 | Testing and final documentation | To be updated |
+
+Team-member names, registration numbers and individual contributions will be inserted according to the actual project team.
+
+## 6.3 Phase I Milestones and Review Progress
+
+The project milestones are organized around the major development activities.
+
+- Initial review: Problem identification and project selection.
+- First review: Literature survey and proposed system.
+- Second review: Architecture, methodology and prototype development.
+- Final review: Implementation progress, preliminary testing and future development plan.
+
+The actual review dates and completed activities should be recorded based on the department schedule.
+
+## 6.4 Work Completed in Phase I
+
+The following items represent the planned Phase I deliverables. Their completion must be confirmed before submission.
+
+- Project problem definition and objectives.
+- Existing-system analysis.
+- Literature review.
+- Proposed system architecture.
+- Frontend interface design.
+- Backend architecture.
+- AI processing workflow.
+- Database designer workflow.
+- Initial prototype development.
+
+## 6.5 Pending Work and Phase II Plan
+
+The following activities can be considered for the next implementation phase:
+
+- Complete natural language SQL generation.
+- Improve SQL explanation accuracy.
+- Implement complete database blueprint generation.
+- Develop requirement completeness analysis.
+- Implement automated schema validation.
+- Integrate ER diagram generation.
+- Complete conversational schema modification.
+- Implement database version management.
+- Complete SQL practice and evaluation.
+- Perform functional and performance testing.
+- Improve security and error handling.
+- Prepare final project documentation.
+
+## 6.6 Expected Outcomes
+
+At the end of the project, Dolphin AI Studio is expected to provide:
+
+- A working natural language SQL generation environment.
+- AI-powered SQL explanations.
+- An interactive SQL practice module.
+- Complete database generation from business requirements.
+- Automatic database structure validation.
+- ER diagram visualization.
+- Conversational database modification.
+- Database version management.
+- SQL script and documentation export.
+
+---
+
+# CHAPTER 7
+# CONCLUSION AND FUTURE WORK
+
+## 7.1 Summary of Project Work
+
+Dolphin AI Studio is proposed as an integrated AI-powered database engineering and SQL learning workspace.
+
+The project focuses on reducing the difficulty of database development by allowing users to communicate with databases through natural language.
+
+The Query Workspace generates SQL queries and provides explanations to help users understand database operations. The Practice Mode provides an environment for students to improve their SQL knowledge.
+
+The AI Database Designer extends the functionality by converting business requirements into complete database structures. It analyzes entities, attributes, relationships and constraints before generating SQL scripts.
+
+The system also includes requirement completeness analysis, schema validation, automatic ER diagram generation, conversational database modification and version management.
+
+## 7.2 Conclusion
+
+Dolphin AI Studio aims to simplify database development by combining Artificial Intelligence, Natural Language Processing and Database Management within a single workspace.
+
+Traditional database tools require users to manually understand and write SQL statements. The proposed system reduces this difficulty by allowing users to express their requirements in simple language and receive structured SQL output with explanations.
+
+The AI Database Designer provides an additional capability by generating complete database structures from application requirements. By introducing requirement analysis, database blueprint generation and schema validation, the system aims to improve the quality of automatically generated database designs.
+
+Conversational modification allows users to extend existing database structures without manually rewriting the complete schema. Automatic ER diagram generation and documentation export further simplify database development.
+
+The project aims to provide a practical environment for students, developers and non-technical users to learn SQL, generate queries and design relational databases more efficiently.
+
+## 7.3 Planned Enhancements and Future Work
+
+**Advanced Database Support**
+
+Future versions can support additional database platforms such as SQLite, Oracle and Microsoft SQL Server.
+
+**Advanced Query Optimization**
+
+The system can provide suggestions for improving query performance through indexing recommendations and query analysis.
+
+**Advanced Database Migration**
+
+The system can generate migration scripts for modifying existing databases while maintaining data consistency.
+
+**Database Performance Analysis**
+
+Future development can include query execution analysis, performance monitoring and database optimization recommendations.
+
+**Team Collaboration**
+
+Multiple users can collaborate on database designs and review schema changes.
+
+**Advanced Security**
+
+Role-based access control, encrypted connection details and secure query execution can be introduced for production environments.
+
+**Local AI Model Support**
+
+The system can support locally hosted language models to improve privacy and reduce dependence on external AI services.
+
+**Advanced Learning Environment**
+
+Additional SQL challenges, difficulty levels, progress tracking and personalized learning recommendations can be introduced.
+
+**Cloud Deployment**
+
+The application can be deployed as a cloud-based database engineering workspace for educational institutions and development teams.
+
+---
+
+# REFERENCES
+
+[1] T. Scholak, N. Schucher and D. Bahdanau, "PICARD: Parsing Incrementally for Constrained Auto-Regressive Decoding from Language Models," Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pp. 9895–9901, 2021. DOI: 10.18653/v1/2021.emnlp-main.779.
+
+[2] M. Pourreza and D. Rafiei, "DIN-SQL: Decomposed In-Context Learning of Text-to-SQL with Self-Correction," Advances in Neural Information Processing Systems (NeurIPS), vol. 36, 2023.
+
+[3] X. Liu et al., "A Survey of NL2SQL with Large Language Models: Where Are We, and Where Are We Going?" arXiv preprint arXiv:2408.05109, 2024.
+
+[4] Z. Hong et al., "Next-Generation Database Interfaces: A Survey of LLM-based Text-to-SQL," arXiv preprint arXiv:2406.08426, 2024.
+
+[5] B. Bogin, M. Gardner and J. Berant, "Representing Schema Structure with Graph Neural Networks for Text-to-SQL Parsing," Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pp. 4560–4565, 2019.
